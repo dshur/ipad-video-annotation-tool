@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Video Notes">
+    <title>Video Annotation Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Video Notes</h1>
+            <button id="load-video-btn" class="load-btn">
+                <span class="btn-icon">+</span>
+                <span id="video-name">Load Video</span>
+            </button>
+            <input type="file" id="video-file" accept="video/*" style="display: none;">
+        </header>
+
+        <main>
+            <section class="video-section">
+                <div class="video-container" id="video-container">
+                    <video id="video-player" playsinline webkit-playsinline>
+                        <p>Your browser doesn't support HTML5 video.</p>
+                    </video>
+                    <div class="video-overlay" id="video-overlay">
+                        <span class="tap-hint">Tap to play/pause</span>
+                    </div>
+                </div>
+
+                <div class="scrubber-container">
+                    <input type="range" id="scrubber" class="scrubber" min="0" max="100" value="0" step="0.1">
+                    <div class="scrubber-progress" id="scrubber-progress"></div>
+                </div>
+
+                <div class="video-controls">
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span class="time-separator">/</span>
+                        <span id="duration">0:00</span>
+                    </div>
+
+                    <div class="playback-controls">
+                        <button id="skip-back" class="control-btn skip-btn" title="Skip back 10s">
+                            <span class="skip-text">-10</span>
+                        </button>
+                        <button id="play-pause" class="control-btn play-btn">
+                            <span class="play-icon">&#9654;</span>
+                        </button>
+                        <button id="skip-forward" class="control-btn skip-btn" title="Skip forward 10s">
+                            <span class="skip-text">+10</span>
+                        </button>
+                    </div>
+
+                    <div class="speed-controls">
+                        <button id="speed-toggle" class="speed-btn">1x</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="notes-section">
+                <div class="note-input-container">
+                    <div class="note-input-header">
+                        <div class="note-timestamp" id="note-timestamp">--:--</div>
+                        <label class="toggle-container" title="Auto-pause when tapping text field">
+                            <input type="checkbox" id="auto-pause-toggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Auto-pause</span>
+                        </label>
+                    </div>
+
+                    <div class="quick-notes">
+                        <button class="quick-note-btn" data-note="Cut starting here">Cut Start</button>
+                        <button class="quick-note-btn" data-note="Cut ending here">Cut End</button>
+                        <button class="quick-note-btn" data-note="Good clip">Good</button>
+                        <button class="quick-note-btn" data-note="Trim">Trim</button>
+                    </div>
+
+                    <textarea
+                        id="note-input"
+                        placeholder="Tap here to add a note..."
+                        rows="2"
+                    ></textarea>
+                    <button id="save-note" class="save-btn">Submit Note</button>
+                </div>
+
+                <div class="notes-header">
+                    <h2>Notes <span id="notes-count">(0)</span></h2>
+                    <div class="export-controls">
+                        <button id="export-btn" class="export-btn">Export</button>
+                    </div>
+                </div>
+
+                <div id="notes-list" class="notes-list">
+                    <p class="empty-state">No notes yet. Tap the text field or a quick note button to add annotations.</p>
+                </div>
+            </section>
+        </main>
+
+        <div id="export-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Export Notes</h3>
+                <button id="export-json" class="modal-btn">Export as JSON</button>
+                <button id="export-csv" class="modal-btn">Export as CSV</button>
+                <button id="export-text" class="modal-btn">Export as Text</button>
+                <button id="copy-notes" class="modal-btn">Copy to Clipboard</button>
+                <button id="close-modal" class="modal-btn cancel-btn">Cancel</button>
+            </div>
+        </div>
+
+        <div id="speed-modal" class="modal hidden">
+            <div class="modal-content speed-modal-content">
+                <h3>Playback Speed</h3>
+                <div class="speed-options">
+                    <button class="speed-option" data-speed="0.5">0.5x</button>
+                    <button class="speed-option" data-speed="0.75">0.75x</button>
+                    <button class="speed-option active" data-speed="1">1x</button>
+                    <button class="speed-option" data-speed="1.25">1.25x</button>
+                    <button class="speed-option" data-speed="1.5">1.5x</button>
+                    <button class="speed-option" data-speed="2">2x</button>
+                </div>
+                <button id="close-speed-modal" class="modal-btn cancel-btn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
