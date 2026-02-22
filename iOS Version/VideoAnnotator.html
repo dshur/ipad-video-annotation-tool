@@ -23,7 +23,11 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
     background: #1a1a2e;
     color: #eee;
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
     touch-action: manipulation;
     padding-top: env(safe-area-inset-top);
     padding-left: env(safe-area-inset-left);
@@ -32,8 +36,7 @@ body {
 }
 
 header {
-    position: sticky;
-    top: 0;
+    flex-shrink: 0;
     z-index: 50;
     display: flex;
     justify-content: space-between;
@@ -63,8 +66,8 @@ h1 {
     color: #aaa;
     border: none;
     border-radius: 8px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1.2rem;
     cursor: pointer;
 }
@@ -105,12 +108,19 @@ h1 {
     white-space: nowrap;
 }
 
-/* Video Section - Fixed at top */
+/* Video Section */
 .video-section {
-    position: sticky;
-    top: 60px;
+    flex-shrink: 0;
     z-index: 40;
     background: #000;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .video-container {
@@ -156,6 +166,40 @@ h1 {
     border-radius: 8px;
 }
 
+.skip-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.skip-overlay.left {
+    left: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.15) 0%, transparent 70%);
+}
+
+.skip-overlay.right {
+    right: 0;
+    background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.15) 0%, transparent 70%);
+}
+
+.skip-overlay.visible {
+    opacity: 1;
+}
+
+.skip-overlay-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
 .scrubber-container {
     position: relative;
     height: 32px;
@@ -180,8 +224,8 @@ h1 {
 .scrubber::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: #4a69bd;
     cursor: pointer;
@@ -248,10 +292,10 @@ h1 {
 }
 
 .skip-btn {
-    width: 48px;
-    height: 40px;
+    width: 52px;
+    height: 44px;
     border-radius: 10px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
 }
 
@@ -292,10 +336,22 @@ h1 {
     background: #3a3a5e;
 }
 
-/* Notes Section - Scrollable */
-.notes-section {
+/* Notes Input - Fixed below video */
+.notes-input-section {
+    flex-shrink: 0;
     background: #16213e;
-    padding: 10px 12px 20px 12px;
+    padding: 10px 12px;
+    border-top: 1px solid #2a2a4e;
+}
+
+/* Notes List - Scrollable */
+.notes-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #16213e;
+    padding: 0 12px 20px 12px;
+    min-height: 0;
 }
 
 .note-input-container {
@@ -371,7 +427,7 @@ h1 {
 
 .toggle-label {
     font-size: 0.8rem;
-    color: #888;
+    color: #9a9ab0;
 }
 
 #note-input {
@@ -395,7 +451,7 @@ h1 {
 }
 
 #note-input::placeholder {
-    color: #666;
+    color: #8a8a9e;
 }
 
 .save-btn {
@@ -428,7 +484,7 @@ h1 {
 
 .quick-notes-label {
     font-size: 0.75rem;
-    color: #666;
+    color: #8a8a9e;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -442,22 +498,23 @@ h1 {
 .quick-note-btn {
     flex: 1;
     min-width: calc(50% - 3px);
-    padding: 10px 8px;
+    padding: 14px 10px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background: #2a2a4e;
     color: #ccc;
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s;
-    min-height: 40px;
+    min-height: 54px;
 }
 
 .quick-note-btn:active {
     background: #4a69bd;
     color: #fff;
-    transform: scale(0.97);
+    transform: scale(0.94);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .notes-header {
@@ -476,12 +533,12 @@ h1 {
 }
 
 #notes-count {
-    color: #666;
+    color: #8a8a9e;
     font-weight: 400;
 }
 
 .export-btn {
-    padding: 8px 14px;
+    padding: 10px 14px;
     border: none;
     border-radius: 8px;
     background: #2a2a4e;
@@ -489,7 +546,7 @@ h1 {
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
-    min-height: 36px;
+    min-height: 44px;
 }
 
 .export-btn:active {
@@ -504,7 +561,7 @@ h1 {
 }
 
 .empty-state {
-    color: #666;
+    color: #8a8a9e;
     text-align: center;
     padding: 20px 16px;
     font-size: 0.9rem;
@@ -523,12 +580,12 @@ h1 {
     font-family: 'SF Mono', Monaco, 'Courier New', monospace;
     font-size: 0.8rem;
     color: #4a69bd;
-    padding: 5px 8px;
+    padding: 8px 10px;
     background: #2a2a4e;
     border-radius: 6px;
     flex-shrink: 0;
     cursor: pointer;
-    min-height: 28px;
+    min-height: 44px;
     display: flex;
     align-items: center;
 }
@@ -667,7 +724,7 @@ h1 {
 
 .settings-section-title {
     font-size: 0.8rem;
-    color: #888;
+    color: #9a9ab0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
@@ -730,49 +787,94 @@ h1 {
     background: #2a2a4e;
 }
 
-/* iPad landscape */
-@media (min-width: 768px) and (min-height: 500px) {
-    body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-    }
+/* Toast notification */
+.toast {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 56px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+}
 
-    .main-content {
-        display: flex;
-        flex-direction: row;
-        flex: 1;
-        overflow: hidden;
-    }
+.toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 
-    .video-section {
-        position: relative;
-        top: 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+/* Reorder buttons in settings */
+.preset-reorder {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
 
+.preset-move-btn {
+    background: none;
+    border: none;
+    color: #9a9ab0;
+    font-size: 1rem;
+    padding: 4px 8px;
+    cursor: pointer;
+    line-height: 1;
+    min-width: 40px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preset-move-btn:active {
+    color: #4a69bd;
+}
+
+.preset-move-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+/* iPad / tablet layout */
+@media (min-width: 768px) {
     .video-container {
-        flex: 1;
-        aspect-ratio: auto;
+        aspect-ratio: 16 / 9;
+        max-height: 50vh;
+        margin: 0 auto;
     }
 
-    .notes-section {
-        width: 360px;
-        flex: none;
-        border-left: 1px solid #2a2a4e;
-        overflow-y: auto;
-        height: 100%;
+    .notes-input-section {
+        padding: 12px 20px;
     }
 
-    .quick-notes {
-        flex-wrap: nowrap;
+    .notes-list-wrapper {
+        padding: 0 20px 20px 20px;
+    }
+
+    .note-input-container {
+        max-width: 900px;
     }
 
     .quick-note-btn {
         min-width: 0;
+        font-size: 1.05rem;
+        min-height: 58px;
+    }
+
+    .notes-header {
+        max-width: 900px;
+    }
+
+    .notes-list {
+        max-width: 900px;
     }
 }
     </style>
@@ -799,6 +901,12 @@ h1 {
                 <div class="video-overlay" id="video-overlay">
                     <span class="tap-hint">Tap to play/pause</span>
                 </div>
+                <div class="skip-overlay left" id="skip-overlay-left">
+                    <span class="skip-overlay-text" id="skip-text-left">-5s</span>
+                </div>
+                <div class="skip-overlay right" id="skip-overlay-right">
+                    <span class="skip-overlay-text" id="skip-text-right">+5s</span>
+                </div>
             </div>
 
             <div class="scrubber-container">
@@ -814,14 +922,14 @@ h1 {
                 </div>
 
                 <div class="playback-controls">
-                    <button id="skip-back" class="control-btn skip-btn" title="Skip back 10s">
-                        <span class="skip-text">-10</span>
+                    <button id="skip-back" class="control-btn skip-btn" title="Skip back 5s">
+                        <span class="skip-text">-5</span>
                     </button>
                     <button id="play-pause" class="control-btn play-btn">
                         <span class="play-icon">&#9654;</span>
                     </button>
-                    <button id="skip-forward" class="control-btn skip-btn" title="Skip forward 10s">
-                        <span class="skip-text">+10</span>
+                    <button id="skip-forward" class="control-btn skip-btn" title="Skip forward 5s">
+                        <span class="skip-text">+5</span>
                     </button>
                 </div>
 
@@ -831,7 +939,7 @@ h1 {
             </div>
         </section>
 
-        <section class="notes-section">
+        <section class="notes-input-section">
             <div class="note-input-container">
                 <div class="note-input-header">
                     <div class="note-timestamp" id="note-timestamp">--:--</div>
@@ -856,7 +964,9 @@ h1 {
                     <!-- Populated by JS -->
                 </div>
             </div>
+        </section>
 
+        <section class="notes-list-wrapper">
             <div class="notes-header">
                 <h2>Notes <span id="notes-count">(0)</span></h2>
                 <div class="export-controls">
@@ -869,6 +979,9 @@ h1 {
             </div>
         </section>
     </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
 
     <!-- Export Modal -->
     <div id="export-modal" class="modal hidden">
@@ -957,6 +1070,7 @@ const speedOptions = document.querySelectorAll('.speed-option');
 const presetsList = document.getElementById('presets-list');
 const addPresetBtn = document.getElementById('add-preset-btn');
 const saveSettingsBtn = document.getElementById('save-settings');
+const toastEl = document.getElementById('toast');
 
 // Default quick note presets (single value - used for both button label and note text)
 const DEFAULT_PRESETS = [
@@ -1056,8 +1170,8 @@ function setupEventListeners() {
 
     // Playback controls
     playPauseBtn.addEventListener('click', togglePlayPause);
-    skipBackBtn.addEventListener('click', () => skip(-10));
-    skipForwardBtn.addEventListener('click', () => skip(10));
+    skipBackBtn.addEventListener('click', () => { skip(-5); flashSkipOverlay('left'); });
+    skipForwardBtn.addEventListener('click', () => { skip(5); flashSkipOverlay('right'); });
     speedToggleBtn.addEventListener('click', () => speedModal.classList.remove('hidden'));
 
     // Speed options
@@ -1244,10 +1358,57 @@ function handleVideoTap(e) {
     if (e.target !== video && e.target !== videoContainer && e.target !== videoOverlay) {
         return;
     }
-    togglePlayPause();
 
-    videoOverlay.classList.add('visible');
-    setTimeout(() => videoOverlay.classList.remove('visible'), 300);
+    const rect = videoContainer.getBoundingClientRect();
+    const x = (e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0) - rect.left;
+    const pct = x / rect.width;
+
+    if (pct < 0.33) {
+        skip(-5);
+        flashSkipOverlay('left');
+    } else if (pct > 0.67) {
+        skip(5);
+        flashSkipOverlay('right');
+    } else {
+        togglePlayPause();
+        videoOverlay.classList.add('visible');
+        setTimeout(() => videoOverlay.classList.remove('visible'), 300);
+    }
+}
+
+// Skip accumulation state
+let skipAccumLeft = 0;
+let skipAccumRight = 0;
+let skipAccumLeftTimeout = null;
+let skipAccumRightTimeout = null;
+
+function flashSkipOverlay(side) {
+    const overlayId = side === 'left' ? 'skip-overlay-left' : 'skip-overlay-right';
+    const textId = side === 'left' ? 'skip-text-left' : 'skip-text-right';
+    const el = document.getElementById(overlayId);
+    const textEl = document.getElementById(textId);
+
+    if (side === 'left') {
+        skipAccumLeft += 5;
+        clearTimeout(skipAccumLeftTimeout);
+        textEl.textContent = `-${skipAccumLeft}s`;
+        el.classList.add('visible');
+        skipAccumLeftTimeout = setTimeout(() => {
+            el.classList.remove('visible');
+            skipAccumLeft = 0;
+            textEl.textContent = '-5s';
+        }, 600);
+    } else {
+        skipAccumRight += 5;
+        clearTimeout(skipAccumRightTimeout);
+        textEl.textContent = `+${skipAccumRight}s`;
+        el.classList.add('visible');
+        skipAccumRightTimeout = setTimeout(() => {
+            el.classList.remove('visible');
+            skipAccumRight = 0;
+            textEl.textContent = '+5s';
+        }, 600);
+    }
 }
 
 function togglePlayPause() {
@@ -1306,6 +1467,17 @@ function handleNoteInputBlur() {
     }
 }
 
+// Toast notification
+let toastTimeout = null;
+function showToast(message) {
+    clearTimeout(toastTimeout);
+    toastEl.textContent = message;
+    toastEl.classList.add('visible');
+    toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('visible');
+    }, 1500);
+}
+
 // Quick Notes - now just strings
 function renderQuickNotes() {
     quickNotesContainer.innerHTML = quickNotePresets.map(preset => `
@@ -1333,6 +1505,7 @@ function handleQuickNote(noteText) {
 
     saveNotesToStorage();
     renderNotes();
+    showToast(`Added "${noteText}" at ${formatTime(timestamp)}`);
 
     const btn = quickNotesContainer.querySelector(`[data-note="${escapeHtml(noteText)}"]`);
     if (btn) {
@@ -1341,7 +1514,7 @@ function handleQuickNote(noteText) {
         setTimeout(() => {
             btn.style.background = '';
             btn.style.color = '';
-        }, 200);
+        }, 300);
     }
 }
 
@@ -1353,8 +1526,13 @@ function openSettingsModal() {
 }
 
 function renderPresetsEditor() {
+    const lastIdx = editingPresets.length - 1;
     presetsList.innerHTML = editingPresets.map((preset, index) => `
         <div class="preset-item" data-index="${index}">
+            <div class="preset-reorder">
+                <button class="preset-move-btn" data-index="${index}" data-dir="up" ${index === 0 ? 'disabled' : ''}>&#9650;</button>
+                <button class="preset-move-btn" data-index="${index}" data-dir="down" ${index === lastIdx ? 'disabled' : ''}>&#9660;</button>
+            </div>
             <input type="text" value="${escapeHtml(preset)}" placeholder="Quick note text" data-index="${index}">
             <button class="preset-delete-btn" data-index="${index}">&times;</button>
         </div>
@@ -1370,8 +1548,19 @@ function renderPresetsEditor() {
 
     presetsList.querySelectorAll('.preset-delete-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = parseInt(e.target.dataset.index);
+            const index = parseInt(e.target.closest('[data-index]').dataset.index);
             editingPresets.splice(index, 1);
+            renderPresetsEditor();
+        });
+    });
+
+    presetsList.querySelectorAll('.preset-move-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            const dir = e.target.dataset.dir;
+            const swapIdx = dir === 'up' ? index - 1 : index + 1;
+            if (swapIdx < 0 || swapIdx >= editingPresets.length) return;
+            [editingPresets[index], editingPresets[swapIdx]] = [editingPresets[swapIdx], editingPresets[index]];
             renderPresetsEditor();
         });
     });
@@ -1424,6 +1613,7 @@ function saveNote() {
 
     saveNotesToStorage();
     renderNotes();
+    showToast(`Note added at ${note.formatted}`);
 
     noteInput.value = '';
     noteInput.blur();
