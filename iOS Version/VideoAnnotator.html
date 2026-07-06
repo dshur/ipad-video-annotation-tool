@@ -96,6 +96,20 @@ h1 {
     background: #3c5aa6;
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.yt-btn {
+    background: #c4302b;
+}
+
+.yt-btn:active {
+    background: #a02722;
+}
+
 .btn-icon {
     font-size: 1.1rem;
     font-weight: 300;
@@ -137,6 +151,35 @@ h1 {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.yt-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.yt-player iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.youtube-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #2a2a4e;
+    border-radius: 10px;
+    background: #1a1a2e;
+    color: #eee;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.youtube-input:focus {
+    outline: none;
+    border-color: #c4302b;
 }
 
 .video-overlay {
@@ -357,7 +400,7 @@ h1 {
 .note-input-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .note-input-header {
@@ -441,7 +484,7 @@ h1 {
     resize: none;
     font-family: inherit;
     transition: border-color 0.2s;
-    min-height: 50px;
+    min-height: 44px;
     max-height: 80px;
 }
 
@@ -455,7 +498,7 @@ h1 {
 }
 
 .save-btn {
-    padding: 14px;
+    padding: 10px;
     border: none;
     border-radius: 10px;
     background: #2ecc71;
@@ -463,7 +506,7 @@ h1 {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    min-height: 48px;
+    min-height: 44px;
 }
 
 .save-btn:active {
@@ -476,7 +519,7 @@ h1 {
 }
 
 .quick-notes-header {
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     margin-top: 4px;
@@ -492,13 +535,15 @@ h1 {
 .quick-notes {
     display: flex;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .quick-note-btn {
-    flex: 1;
-    min-width: calc(50% - 3px);
-    padding: 14px 10px;
+    flex: 0 0 auto;
+    min-width: auto;
+    padding: 10px 14px;
     border: none;
     border-radius: 10px;
     background: #2a2a4e;
@@ -507,7 +552,8 @@ h1 {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s;
-    min-height: 54px;
+    min-height: 44px;
+    white-space: nowrap;
 }
 
 .quick-note-btn:active {
@@ -843,8 +889,8 @@ h1 {
     cursor: default;
 }
 
-/* iPad / tablet layout */
-@media (min-width: 768px) {
+/* iPad portrait layout */
+@media (min-width: 768px) and (orientation: portrait) {
     .video-container {
         aspect-ratio: 16 / 9;
         max-height: 35vh;
@@ -859,14 +905,189 @@ h1 {
         padding: 0 20px 20px 20px;
     }
 
+    .note-input-container {
+        gap: 8px;
+    }
+
+    #note-input {
+        min-height: 50px;
+    }
+
+    .save-btn {
+        padding: 14px;
+        min-height: 48px;
+    }
+
+    .quick-notes-header {
+        display: flex;
+    }
+
     .quick-notes {
         flex-wrap: nowrap;
+        overflow-x: visible;
     }
 
     .quick-note-btn {
+        flex: 1;
         min-width: 0;
         font-size: 1.05rem;
         min-height: 54px;
+        padding: 14px 10px;
+        white-space: normal;
+    }
+}
+
+/* Landscape layout — side-by-side grid */
+@media (min-width: 768px) and (orientation: landscape) {
+    .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .video-section {
+        grid-column: 1;
+        grid-row: 1 / -1;
+        overflow-y: auto;
+    }
+
+    .video-container {
+        aspect-ratio: auto;
+        max-height: none;
+    }
+
+    #video-player {
+        object-fit: contain;
+    }
+
+    .notes-input-section {
+        grid-column: 2;
+        grid-row: 1;
+        border-top: none;
+        border-left: 1px solid #2a2a4e;
+        padding: 8px 12px;
+    }
+
+    .notes-list-wrapper {
+        grid-column: 2;
+        grid-row: 2;
+        border-left: 1px solid #2a2a4e;
+        padding: 0 12px 12px 12px;
+    }
+}
+
+/* iPhone landscape — ultra-compact */
+@media (max-height: 440px) and (orientation: landscape) {
+    header {
+        padding: 4px 12px;
+    }
+
+    h1 {
+        font-size: 0.95rem;
+    }
+
+    .header-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .load-btn {
+        padding: 4px 10px;
+        min-height: 34px;
+        font-size: 0.8rem;
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .video-section {
+        grid-column: 1;
+        grid-row: 1 / -1;
+        overflow-y: auto;
+    }
+
+    .video-container {
+        aspect-ratio: auto;
+        max-height: none;
+    }
+
+    .scrubber-container {
+        height: 24px;
+    }
+
+    .video-controls {
+        padding: 4px 10px;
+    }
+
+    .play-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+    }
+
+    .skip-btn {
+        width: 40px;
+        height: 36px;
+        font-size: 0.75rem;
+    }
+
+    .playback-controls {
+        gap: 8px;
+    }
+
+    .notes-input-section {
+        grid-column: 2;
+        grid-row: 1;
+        border-top: none;
+        border-left: 1px solid #2a2a4e;
+        padding: 6px 8px;
+    }
+
+    .notes-list-wrapper {
+        grid-column: 2;
+        grid-row: 2;
+        border-left: 1px solid #2a2a4e;
+        padding: 0 8px 8px 8px;
+    }
+
+    .note-input-container {
+        gap: 4px;
+    }
+
+    #note-input {
+        min-height: 36px;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .save-btn {
+        padding: 6px;
+        min-height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .quick-note-btn {
+        min-height: 36px;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .note-timestamp {
+        font-size: 1rem;
+        padding: 4px 8px;
+    }
+
+    .notes-header {
+        margin: 6px 0 4px 0;
+        padding-bottom: 4px;
+    }
+
+    .note-item {
+        padding: 6px;
     }
 }
     </style>
@@ -877,10 +1098,13 @@ h1 {
             <h1>Video Notes</h1>
             <button id="settings-btn" class="header-btn" title="Settings">&#9881;</button>
         </div>
-        <button id="load-video-btn" class="load-btn">
-            <span class="btn-icon">+</span>
-            <span id="video-name">Load Video</span>
-        </button>
+        <div class="header-right">
+            <button id="load-video-btn" class="load-btn">
+                <span class="btn-icon">+</span>
+                <span id="video-name">Load Video</span>
+            </button>
+            <button id="load-youtube-btn" class="load-btn yt-btn">YouTube</button>
+        </div>
         <input type="file" id="video-file" accept="video/*" style="display: none;">
     </header>
 
@@ -890,6 +1114,7 @@ h1 {
                 <video id="video-player" playsinline webkit-playsinline>
                     <p>Your browser doesn't support HTML5 video.</p>
                 </video>
+                <div id="yt-player" class="yt-player" style="display: none;"><div id="yt-mount"></div></div>
                 <div class="video-overlay" id="video-overlay">
                     <span class="tap-hint">Tap to play/pause</span>
                 </div>
@@ -1003,6 +1228,16 @@ h1 {
         </div>
     </div>
 
+    <!-- YouTube Modal -->
+    <div id="youtube-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Load YouTube Video</h3>
+            <input type="url" id="youtube-url" class="youtube-input" placeholder="Paste a YouTube link" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button id="youtube-load-btn" class="modal-btn" style="background: #c4302b;">Load Video</button>
+            <button id="close-youtube-modal" class="modal-btn cancel-btn">Cancel</button>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal hidden">
         <div class="modal-content">
@@ -1021,13 +1256,77 @@ h1 {
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
 // DOM Elements
 const videoFile = document.getElementById('video-file');
 const loadVideoBtn = document.getElementById('load-video-btn');
 const videoNameDisplay = document.getElementById('video-name');
-const video = document.getElementById('video-player');
+const videoEl = document.getElementById('video-player');
+const ytEl = document.getElementById('yt-player');
 const videoContainer = document.getElementById('video-container');
+
+// ── Player abstraction ───────────────────────────────────────────────────────
+// `video` is a facade so all existing playback logic works for both the local
+// <video> element and an embedded YouTube IFrame player. playerMode switches
+// which backend the facade reads/writes.
+let playerMode = 'local';        // 'local' | 'youtube'
+let ytPlayer = null;             // YT.Player instance (created on first YouTube load)
+let ytApiReady = false;          // set true by onYouTubeIframeAPIReady
+let pendingYtId = null;          // video id waiting for the API to finish loading
+let ytDuration = 0;
+let ytPaused = true;
+let ytPollTimer = null;
+
+const video = {
+    get mode() { return playerMode; },
+    get currentTime() {
+        if (playerMode === 'youtube') {
+            return ytPlayer && ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+        }
+        return videoEl.currentTime;
+    },
+    set currentTime(t) {
+        if (playerMode === 'youtube') {
+            if (ytPlayer && ytPlayer.seekTo) ytPlayer.seekTo(t, true);
+        } else {
+            videoEl.currentTime = t;
+        }
+    },
+    get duration() {
+        return playerMode === 'youtube' ? ytDuration : videoEl.duration;
+    },
+    get paused() {
+        return playerMode === 'youtube' ? ytPaused : videoEl.paused;
+    },
+    play() {
+        if (playerMode === 'youtube') {
+            if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo();
+        } else {
+            videoEl.play();
+        }
+    },
+    pause() {
+        if (playerMode === 'youtube') {
+            if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+        } else {
+            videoEl.pause();
+        }
+    },
+    get playbackRate() {
+        if (playerMode === 'youtube') {
+            return ytPlayer && ytPlayer.getPlaybackRate ? ytPlayer.getPlaybackRate() : 1;
+        }
+        return videoEl.playbackRate;
+    },
+    set playbackRate(r) {
+        if (playerMode === 'youtube') {
+            if (ytPlayer && ytPlayer.setPlaybackRate) ytPlayer.setPlaybackRate(r);
+        } else {
+            videoEl.playbackRate = r;
+        }
+    }
+};
 const videoOverlay = document.getElementById('video-overlay');
 const scrubber = document.getElementById('scrubber');
 const scrubberProgress = document.getElementById('scrubber-progress');
@@ -1047,10 +1346,17 @@ const autoPauseToggle = document.getElementById('auto-pause-toggle');
 const quickNotesContainer = document.getElementById('quick-notes-container');
 const settingsBtn = document.getElementById('settings-btn');
 
+// YouTube controls
+const loadYoutubeBtn = document.getElementById('load-youtube-btn');
+const youtubeUrlInput = document.getElementById('youtube-url');
+const youtubeLoadBtn = document.getElementById('youtube-load-btn');
+
 // Modals
 const exportModal = document.getElementById('export-modal');
 const speedModal = document.getElementById('speed-modal');
 const settingsModal = document.getElementById('settings-modal');
+const youtubeModal = document.getElementById('youtube-modal');
+const closeYoutubeModalBtn = document.getElementById('close-youtube-modal');
 const exportJsonBtn = document.getElementById('export-json');
 const exportCsvBtn = document.getElementById('export-csv');
 const exportTextBtn = document.getElementById('export-text');
@@ -1140,17 +1446,31 @@ function setupEventListeners() {
     loadVideoBtn.addEventListener('click', () => videoFile.click());
     videoFile.addEventListener('change', handleVideoLoad);
 
-    // Video events
-    video.addEventListener('loadedmetadata', handleVideoMetadata);
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('play', updatePlayPauseButton);
-    video.addEventListener('pause', updatePlayPauseButton);
-    video.addEventListener('ended', updatePlayPauseButton);
+    // YouTube loading
+    loadYoutubeBtn.addEventListener('click', () => {
+        youtubeModal.classList.remove('hidden');
+        youtubeUrlInput.focus();
+    });
+    youtubeLoadBtn.addEventListener('click', handleYouTubeLoad);
+    youtubeUrlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); handleYouTubeLoad(); }
+    });
+    closeYoutubeModalBtn.addEventListener('click', () => youtubeModal.classList.add('hidden'));
+    youtubeModal.addEventListener('click', (e) => {
+        if (e.target === youtubeModal) youtubeModal.classList.add('hidden');
+    });
+
+    // Video events (local <video> element)
+    videoEl.addEventListener('loadedmetadata', handleVideoMetadata);
+    videoEl.addEventListener('timeupdate', handleTimeUpdate);
+    videoEl.addEventListener('play', updatePlayPauseButton);
+    videoEl.addEventListener('pause', updatePlayPauseButton);
+    videoEl.addEventListener('ended', updatePlayPauseButton);
 
     // Stall recovery for Safari blob URL buffering issues
-    video.addEventListener('stalled', handleVideoStall);
-    video.addEventListener('waiting', handleVideoWaiting);
-    video.addEventListener('playing', resetStallRecovery);
+    videoEl.addEventListener('stalled', handleVideoStall);
+    videoEl.addEventListener('waiting', handleVideoWaiting);
+    videoEl.addEventListener('playing', resetStallRecovery);
 
     // Video container tap to play/pause
     videoContainer.addEventListener('click', handleVideoTap);
@@ -1225,6 +1545,8 @@ async function handleVideoLoad(e) {
     const file = e.target.files[0];
     if (!file) return;
 
+    switchToLocalMode();
+
     const mimeType = file.type || getMimeTypeFromExtension(file.name);
     currentVideoName = file.name;
     currentVideoId = generateVideoId(file);
@@ -1250,7 +1572,7 @@ async function handleVideoLoad(e) {
         // Point video at the virtual path — service worker intercepts
         // and serves with range request support
         const videoUrl = new URL('__video__/current', location.href).href;
-        video.src = videoUrl;
+        videoEl.src = videoUrl;
     } else {
         // Fallback when service worker isn't available
         loadVideoAsBlobUrl(file, mimeType);
@@ -1261,11 +1583,149 @@ async function handleVideoLoad(e) {
 
 function loadVideoAsBlobUrl(file, mimeType) {
     const typedBlob = new Blob([file], { type: mimeType });
-    video.src = URL.createObjectURL(typedBlob);
+    videoEl.src = URL.createObjectURL(typedBlob);
 }
 
 function generateVideoId(file) {
     return `${file.name}_${file.size}_${file.lastModified}`;
+}
+
+// ── YouTube integration ──────────────────────────────────────────────────────
+
+// Called by the IFrame API once it has loaded (global hook).
+window.onYouTubeIframeAPIReady = function() {
+    ytApiReady = true;
+    if (pendingYtId) {
+        createYtPlayer(pendingYtId);
+        pendingYtId = null;
+    }
+};
+
+// Extract the 11-char video id from any common YouTube URL form (or a bare id).
+function parseYouTubeId(input) {
+    if (!input) return null;
+    const trimmed = input.trim();
+
+    // Bare 11-char id
+    if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+
+    const patterns = [
+        /[?&]v=([a-zA-Z0-9_-]{11})/,        // watch?v=ID
+        /youtu\.be\/([a-zA-Z0-9_-]{11})/,   // youtu.be/ID
+        /\/embed\/([a-zA-Z0-9_-]{11})/,     // /embed/ID
+        /\/shorts\/([a-zA-Z0-9_-]{11})/,    // /shorts/ID
+        /\/live\/([a-zA-Z0-9_-]{11})/       // /live/ID
+    ];
+    for (const re of patterns) {
+        const m = trimmed.match(re);
+        if (m) return m[1];
+    }
+    return null;
+}
+
+function handleYouTubeLoad() {
+    const id = parseYouTubeId(youtubeUrlInput.value);
+    if (!id) {
+        alert('Could not find a YouTube video ID in that URL.\n\nPaste a link like https://www.youtube.com/watch?v=… or https://youtu.be/…');
+        return;
+    }
+
+    youtubeModal.classList.add('hidden');
+    youtubeUrlInput.blur();
+
+    switchToYouTubeMode();
+
+    currentVideoName = 'YouTube: ' + id;
+    currentVideoId = 'yt_' + id;
+    videoNameDisplay.textContent = 'YT: ' + id;
+    ytDuration = 0;
+
+    if (ytPlayer && ytPlayer.loadVideoById) {
+        ytPlayer.loadVideoById(id);
+        // onReady only fires for a brand-new player; restart the poll on reuse.
+        startYtPoll();
+    } else if (ytApiReady) {
+        createYtPlayer(id);
+    } else {
+        // API script still loading; create the player when it's ready.
+        pendingYtId = id;
+    }
+
+    loadNotesForVideo(currentVideoId);
+    showToast('Loading YouTube video…');
+}
+
+function createYtPlayer(id) {
+    // Mount on an inner div — the IFrame API REPLACES its target element with the
+    // iframe, so we keep #yt-player as a stable wrapper we can still show/hide.
+    ytPlayer = new YT.Player('yt-mount', {
+        videoId: id,
+        playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+        events: {
+            onReady: onYtReady,
+            onStateChange: onYtStateChange
+        }
+    });
+}
+
+function onYtReady() {
+    ytDuration = ytPlayer.getDuration() || 0;
+    if (ytDuration) {
+        durationDisplay.textContent = formatTime(ytDuration);
+        scrubber.max = ytDuration;
+    }
+    ytPlayer.setPlaybackRate(currentSpeed);
+    startYtPoll();
+}
+
+function onYtStateChange(e) {
+    // YT.PlayerState: -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering, 5 cued
+    if (e.data === 1) {
+        ytPaused = false;
+    } else if (e.data === 2 || e.data === 0) {
+        ytPaused = true;
+    }
+    updatePlayPauseButton();
+}
+
+// YouTube has no timeupdate event, so poll while in YouTube mode.
+function startYtPoll() {
+    if (ytPollTimer) return;
+    ytPollTimer = setInterval(function() {
+        if (playerMode !== 'youtube' || !ytPlayer) return;
+        if (!ytDuration && ytPlayer.getDuration) {
+            ytDuration = ytPlayer.getDuration() || 0;
+            if (ytDuration) {
+                durationDisplay.textContent = formatTime(ytDuration);
+                scrubber.max = ytDuration;
+            }
+        }
+        handleTimeUpdate();
+    }, 150);
+}
+
+function stopYtPoll() {
+    if (ytPollTimer) {
+        clearInterval(ytPollTimer);
+        ytPollTimer = null;
+    }
+}
+
+function switchToYouTubeMode() {
+    playerMode = 'youtube';
+    videoEl.pause();
+    videoEl.style.display = 'none';
+    ytEl.style.display = '';
+}
+
+function switchToLocalMode() {
+    if (playerMode === 'local') return;
+    playerMode = 'local';
+    stopYtPoll();
+    if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+    ytPaused = true;
+    ytEl.style.display = 'none';
+    videoEl.style.display = '';
 }
 
 function loadNotesForVideo(videoId) {
@@ -1281,9 +1741,9 @@ function loadNotesForVideo(videoId) {
 }
 
 function handleVideoMetadata() {
-    durationDisplay.textContent = formatTime(video.duration);
-    scrubber.max = video.duration;
-    video.playbackRate = currentSpeed;
+    durationDisplay.textContent = formatTime(videoEl.duration);
+    scrubber.max = videoEl.duration;
+    videoEl.playbackRate = currentSpeed;
 }
 
 // Stall recovery
@@ -1291,16 +1751,16 @@ let stallRecoveryTimeout = null;
 let stallRecoveryAttempts = 0;
 
 function handleVideoStall() {
-    if (video.paused || video.ended) return;
+    if (videoEl.paused || videoEl.ended) return;
     if (stallRecoveryTimeout) clearTimeout(stallRecoveryTimeout);
     stallRecoveryTimeout = setTimeout(() => attemptStallRecovery(), 2000);
 }
 
 function handleVideoWaiting() {
-    if (video.paused || video.ended) return;
+    if (videoEl.paused || videoEl.ended) return;
     if (stallRecoveryTimeout) clearTimeout(stallRecoveryTimeout);
     stallRecoveryTimeout = setTimeout(() => {
-        if (!video.paused && video.readyState < 3) {
+        if (!videoEl.paused && videoEl.readyState < 3) {
             attemptStallRecovery();
         }
     }, 4000);
@@ -1312,9 +1772,9 @@ function attemptStallRecovery() {
         return;
     }
     stallRecoveryAttempts++;
-    const savedTime = video.currentTime;
-    video.currentTime = savedTime + 0.01;
-    video.play().catch(() => {});
+    const savedTime = videoEl.currentTime;
+    videoEl.currentTime = savedTime + 0.01;
+    videoEl.play().catch(() => {});
 }
 
 function resetStallRecovery() {
@@ -1347,7 +1807,7 @@ function updateScrubberProgress() {
 
 // Video Controls
 function handleVideoTap(e) {
-    if (e.target !== video && e.target !== videoContainer && e.target !== videoOverlay) {
+    if (e.target !== videoEl && e.target !== videoContainer && e.target !== videoOverlay) {
         return;
     }
 
