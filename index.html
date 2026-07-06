@@ -556,6 +556,12 @@ h1 {
     white-space: nowrap;
 }
 
+.quick-note-edit-btn {
+    background: transparent;
+    border: 1px dashed #4a69bd;
+    color: #8899cc;
+}
+
 .quick-note-btn:active {
     background: #4a69bd;
     color: #fff;
@@ -1934,12 +1940,15 @@ function showToast(message) {
 function renderQuickNotes() {
     quickNotesContainer.innerHTML = quickNotePresets.map(preset => `
         <button class="quick-note-btn" data-note="${escapeHtml(preset)}">${escapeHtml(preset)}</button>
-    `).join('');
+    `).join('') + `
+        <button class="quick-note-btn quick-note-edit-btn" id="edit-quick-notes-btn" title="Edit quick notes">&#9998; Edit</button>
+    `;
 
     // Re-attach event listeners
-    quickNotesContainer.querySelectorAll('.quick-note-btn').forEach(btn => {
+    quickNotesContainer.querySelectorAll('.quick-note-btn[data-note]').forEach(btn => {
         btn.addEventListener('click', () => handleQuickNote(btn.dataset.note));
     });
+    document.getElementById('edit-quick-notes-btn').addEventListener('click', openSettingsModal);
 }
 
 function handleQuickNote(noteText) {
